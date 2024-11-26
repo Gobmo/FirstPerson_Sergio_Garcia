@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class Enemigo : MonoBehaviour
 {
+    /*
     private NavMeshAgent agent;
     private Jugador player;
     private Animator animator;
@@ -68,4 +69,5 @@ public class Enemigo : MonoBehaviour
     {
         Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.transform.position, radioAtaque, playerLayer);
     }
+    */
 }

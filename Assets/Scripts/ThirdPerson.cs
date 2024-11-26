@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ThirdPerson : MonoBehaviour
 {
+    /*
     [SerializeField] float velocidadMov, tiempoSuavizado, velocidadRotacion, escalaGravedad, radioDeteccion, alturaSalto;
     [SerializeField] private Transform pies;
     [SerializeField] LayerMask queEsSuelo;
@@ -76,4 +77,5 @@ public class ThirdPerson : MonoBehaviour
     {
         Gizmos.DrawSphere(pies.transform.position, radioDeteccion);
     }
+    */
 }
