@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class Enemigo : MonoBehaviour
 {
-    /*
     private NavMeshAgent agent;
     private Jugador player;
     private Animator animator;
@@ -21,6 +20,7 @@ public class Enemigo : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<Jugador>();
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -69,5 +69,4 @@ public class Enemigo : MonoBehaviour
     {
         Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.transform.position, radioAtaque, playerLayer);
     }
-    */
 }
