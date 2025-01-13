@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    [SerializeField] float velocidadMov, tiempoSuavizado, velocidadRotacion, escalaGravedad, radioDeteccion, alturaSalto;
-    [SerializeField] private Transform pies;
+    [SerializeField] float tiempoSuavizado, velocidadRotacion, escalaGravedad, radioDeteccion, alturaSalto;
+    [SerializeField] Transform pies;
     [SerializeField] LayerMask queEsSuelo;
     CharacterController cC;
     Vector2 input = Vector2.zero;
-    //Animator animator;
+    float vida = 100f;
+    float velocidadMov = 0, velocidadAndar = 10f, velocidadCorrer = 15f;
     private Vector3 movimientoVertical;
-    // Start is called before the first frame update 
+
+    
     void Start()
     {
         cC = GetComponent<CharacterController>();
-        //animator = GetComponent<Animator>();
+        velocidadMov = velocidadAndar;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -28,12 +29,9 @@ public class Jugador : MonoBehaviour
         if (input.magnitude != 0)
         {
             Movimiento();
-            //animator.SetBool("Walking", true);
         }
-        else
-        {
-            //animator.SetBool("Walking", false);
-        }
+
+        
 
         DetectarSuelo();
         AplicarGravedad();
@@ -43,11 +41,11 @@ public class Jugador : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            velocidadMov *= 2;
+            velocidadMov = velocidadCorrer;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         { 
-            velocidadMov /= 2;
+            velocidadMov = velocidadAndar;
         }
 
         float angulorotacion = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
@@ -79,6 +77,13 @@ public class Jugador : MonoBehaviour
         {
             movimientoVertical.y = Mathf.Sqrt(-2 * escalaGravedad * alturaSalto);
         }
+    }
+
+    
+
+    public void RecibirDano(float danho)
+    {
+        vida -= danho;
     }
 
     private void OnDrawGizmos()

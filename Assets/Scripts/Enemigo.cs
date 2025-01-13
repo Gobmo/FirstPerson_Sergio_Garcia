@@ -9,6 +9,7 @@ public class Enemigo : MonoBehaviour
     private NavMeshAgent agent;
     private Jugador player;
     private Animator animator;
+    private float cooldownAtaque = 0f;
     [SerializeField] float danoAtaque;
     [SerializeField] Transform attackPoint;
     [SerializeField] float radioAtaque;
@@ -28,10 +29,14 @@ public class Enemigo : MonoBehaviour
     {
         Perseguir();
 
+        MirarAlJugador();
+
         if (ventanaAbierta)
         {
             DetectarJugador();
         }
+
+        cooldownAtaque -= Time.deltaTime;
     }
 
     private void Perseguir()
@@ -41,32 +46,64 @@ public class Enemigo : MonoBehaviour
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
             agent.isStopped = true;
-            animator.SetBool("attacking", true);
+            animator.SetBool("Moving", false);
+            if (cooldownAtaque <= 0)
+            {
+                animator.SetBool("Atack", true); 
+            }
         }
         else
         {
-            animator.SetBool("attacking", false);
+            agent.isStopped = false;
+            animator.SetBool("Moving", true);
+            animator.SetBool("Atack", false);
         }
     }
 
     #region eventos de animacion
-    private void FinAtaque()
-    {
-        animator.SetBool("attacking", false);
-    }
     private void AbrirVentanaAtaque()
     {
         ventanaAbierta = true;
+        cooldownAtaque = 1.5f;
     }
     private void CerrarVentanaAtaque()
     {
         ventanaAbierta = false;
+        animator.SetBool("Atack", false);
     }
     #endregion
 
 
+    private void MirarAlJugador()
+    {
+        Vector3 direccion = player.transform.position - transform.position;
+        direccion.y = 0;
+
+        if (direccion != Vector3.zero)
+        {
+            Quaternion rotacion = Quaternion.LookRotation(direccion);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, rotacion, 5 * Time.deltaTime);
+            transform.rotation = rotacion;
+        }
+    }
+
     private void DetectarJugador()
     {
         Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.transform.position, radioAtaque, playerLayer);
+        if (collsDetectados.Length > 0 )
+        {
+            player.RecibirDano(danoAtaque);
+            ventanaAbierta = false;
+        }
+    }
+
+    public void RecibirDano(int danho)
+    {
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(attackPoint.transform.position, radioAtaque);
     }
 }
