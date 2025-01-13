@@ -20,6 +20,9 @@ public class ArmasController : MonoBehaviour
         armas[1] = GameObject.Find("Rifle");
         armas[2] = GameObject.Find("Escopeta");
 
+        armas[1].SetActive(false);
+        armas[2].SetActive(false);
+
         animatorArmas[0] = armas[0].GetComponent<Animator>();
         animatorArmas[1] = armas[1].GetComponent<Animator>();
         animatorArmas[2] = armas[2].GetComponent<Animator>();

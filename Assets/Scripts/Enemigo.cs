@@ -10,10 +10,12 @@ public class Enemigo : MonoBehaviour
     private Jugador player;
     private Animator animator;
     private float cooldownAtaque = 0f;
+    private bool perseguirJugador = false;
     [SerializeField] float danoAtaque;
-    [SerializeField] Transform attackPoint;
+    [SerializeField] Transform attackPoint, puntoSalirAtaud;
     [SerializeField] float radioAtaque;
     [SerializeField] LayerMask playerLayer;
+    private Collider coll;
 
     private bool ventanaAbierta = false;
     // Start is called before the first frame update
@@ -22,14 +24,27 @@ public class Enemigo : MonoBehaviour
         player = GameObject.FindObjectOfType<Jugador>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        coll = GetComponent<Collider>();
+
+        agent.SetDestination(puntoSalirAtaud.transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Perseguir();
-
-        MirarAlJugador();
+        if (perseguirJugador)
+        {
+            Perseguir();
+            MirarAlJugador(); 
+        }
+        else
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                perseguirJugador=true;
+                coll.isTrigger = false;
+            }
+        }
 
         if (ventanaAbierta)
         {
@@ -99,7 +114,7 @@ public class Enemigo : MonoBehaviour
 
     public void RecibirDano(int danho)
     {
-
+        
     }
 
     private void OnDrawGizmos()

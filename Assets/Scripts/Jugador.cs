@@ -66,7 +66,7 @@ public class Jugador : MonoBehaviour
         Collider[] collsDetectados = Physics.OverlapSphere(pies.transform.position, radioDeteccion, queEsSuelo);
         if (collsDetectados.Length > 0)
         {
-            movimientoVertical.y = 0;
+            //movimientoVertical.y = 0;
             Salto();
         }
     }
@@ -76,6 +76,7 @@ public class Jugador : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             movimientoVertical.y = Mathf.Sqrt(-2 * escalaGravedad * alturaSalto);
+            //movimientoVertical.y =  escalaGravedad * alturaSalto;
         }
     }
 
