@@ -7,13 +7,16 @@ public class Jugador : MonoBehaviour
     [SerializeField] float tiempoSuavizado, velocidadRotacion, escalaGravedad, radioDeteccion, alturaSalto;
     [SerializeField] Transform pies;
     [SerializeField] LayerMask queEsSuelo;
+    [SerializeField] ArmasController armasController;
     CharacterController cC;
     Vector2 input = Vector2.zero;
-    float vida = 100f;
+    float vida = 10f;
+    float coolDownRegenVida = 3f;
     float velocidadMov = 0, velocidadAndar = 10f, velocidadCorrer = 15f;
     private Vector3 movimientoVertical;
 
-    
+    public float Vida { get => vida; }
+
     void Start()
     {
         cC = GetComponent<CharacterController>();
@@ -31,10 +34,25 @@ public class Jugador : MonoBehaviour
             Movimiento();
         }
 
-        
-
         DetectarSuelo();
         AplicarGravedad();
+
+        coolDownRegenVida--;
+        if (vida < 10 && coolDownRegenVida < 0)
+        {
+            vida += 1;
+            coolDownRegenVida = 1f;
+            armasController.ActualizarHUD();
+        }
+        else if (vida > 10)
+        {
+            vida = 10f;
+        }
+
+        if (vida <= 0)
+        {
+            Time.timeScale = 0;
+        }
     }
 
     void Movimiento()
@@ -80,11 +98,11 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    
-
     public void RecibirDano(float danho)
     {
         vida -= danho;
+        coolDownRegenVida = 3f;
+        armasController.ActualizarHUD();
     }
 
     private void OnDrawGizmos()

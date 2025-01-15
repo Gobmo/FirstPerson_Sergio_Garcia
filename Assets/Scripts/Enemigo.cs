@@ -9,13 +9,14 @@ public class Enemigo : MonoBehaviour
     private NavMeshAgent agent;
     private Jugador player;
     private Animator animator;
+    private RoundsController roundsController;
     private float cooldownAtaque = 0f;
-    private bool perseguirJugador = false;
-    [SerializeField] float danoAtaque;
-    [SerializeField] Transform attackPoint, puntoSalirAtaud;
+    private int vida = 10;
+    private float danoAtaque = 1f;
+    [SerializeField] Transform attackPoint;
     [SerializeField] float radioAtaque;
     [SerializeField] LayerMask playerLayer;
-    private Collider coll;
+    private CapsuleCollider coll;
 
     private bool ventanaAbierta = false;
     // Start is called before the first frame update
@@ -24,34 +25,22 @@ public class Enemigo : MonoBehaviour
         player = GameObject.FindObjectOfType<Jugador>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        coll = GetComponent<Collider>();
-
-        agent.SetDestination(puntoSalirAtaud.transform.position);
+        coll = GetComponent<CapsuleCollider>();
+        roundsController = FindAnyObjectByType<RoundsController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (perseguirJugador)
-        {
-            Perseguir();
-            MirarAlJugador(); 
-        }
-        else
-        {
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                perseguirJugador=true;
-                coll.isTrigger = false;
-            }
-        }
+        Perseguir();
+        MirarAlJugador();
 
         if (ventanaAbierta)
         {
             DetectarJugador();
         }
 
-        cooldownAtaque -= Time.deltaTime;
+        cooldownAtaque -= Time.deltaTime; 
     }
 
     private void Perseguir()
@@ -114,7 +103,15 @@ public class Enemigo : MonoBehaviour
 
     public void RecibirDano(int danho)
     {
-        
+        vida -= danho;
+        if (vida <= 0)
+        {
+            animator.SetBool("Dead", true);
+            roundsController.EnemigosMuertos++;
+            coll.enabled = false;
+            agent.enabled = false;
+            this.enabled = false;
+        }
     }
 
     private void OnDrawGizmos()

@@ -7,25 +7,22 @@ public class SpawnController : MonoBehaviour
     [SerializeField] LayerMask ataudesMask;
     [SerializeField] float radioDeteccionAtaudes;
     [SerializeField] GameObject prefabEnemigo;
-    Collider[] puntosSpawn;
+    [SerializeField] RoundsController roundsController;
+    private Collider[] puntosSpawn;
     private int random = 0;
 
     void Update()
     {
-        DetectarAtaudes();
+        
     }
 
-    private void DetectarAtaudes()
+    public void SpawnEnemigos()
     {
         Collider[] puntosSpawn = Physics.OverlapSphere(transform.position, radioDeteccionAtaudes, ataudesMask);
-    }
-
-    private void SpawnEnemigos()
-    {
         random = Random.Range(0, puntosSpawn.Length);
         GameObject ataudSpawn = puntosSpawn[random].gameObject;
         GameObject enemigo = Instantiate(prefabEnemigo, ataudSpawn.transform.position, Quaternion.identity);
-        //enemigosSpawneados++;
+        roundsController.EnemigosSpawneados++;
     }
 
     private void OnDrawGizmos()
