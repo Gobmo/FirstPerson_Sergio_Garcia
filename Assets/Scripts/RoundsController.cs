@@ -9,9 +9,11 @@ public class RoundsController : MonoBehaviour
     bool activo = false;
     [SerializeField] SpawnController spawnController;
     [SerializeField] GameObject bloqueo;
+    [SerializeField] ArmasController armasController;
 
     public int EnemigosSpawneados { get => enemigosSpawneados; set => enemigosSpawneados = value; }
     public int EnemigosMuertos { get => enemigosMuertos; set => enemigosMuertos = value; }
+    public int NumeroRonda { get => numeroRonda; }
 
     [SerializeField] float radioDeteccionBoton;
     [SerializeField] LayerMask botonMask;
@@ -33,7 +35,7 @@ public class RoundsController : MonoBehaviour
             bloqueo.SetActive(false);
             DetectarBoton();
         }
-        if (enemigosMuertos == enemigosSpawneados)
+        if (enemigosMuertos == enemigosASpawnear)
         {
             LimpiarEscenario();
         }
@@ -50,13 +52,13 @@ public class RoundsController : MonoBehaviour
 
     private void EmpezarOleada()
     {
-        Debug.Log(enemigosASpawnear);
+        //Debug.Log(enemigosASpawnear);
         cooldownSpawn -= Time.deltaTime;
         if (cooldownSpawn < 0 && enemigosSpawneados < enemigosASpawnear)
         {
             spawnController.SpawnEnemigos();
             cooldownSpawn = Random.Range(1, 5f);
-            Debug.Log(enemigosSpawneados);
+            //Debug.Log(enemigosSpawneados);
         }
         if (enemigosSpawneados == enemigosASpawnear)
         {
@@ -67,6 +69,7 @@ public class RoundsController : MonoBehaviour
     private void LimpiarEscenario()
     {
         numeroRonda++;
+        armasController.ActualizarHUD();
         enemigosSpawneados = 0;
         enemigosASpawnear++;
         for (int i = 0; i < enemigosMuertos; i++)

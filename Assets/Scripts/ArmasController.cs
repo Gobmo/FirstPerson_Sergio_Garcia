@@ -16,11 +16,12 @@ public class ArmasController : MonoBehaviour
     private float cooldownRecarga = 0f;
     [SerializeField] LayerMask enemigoMask, armasMask;
     [SerializeField] Jugador jugador;
+    [SerializeField] RoundsController roundsController;
     public int armaActiva = 0;
     GameObject[] armas = new GameObject[3];
     Animator[] animatorArmas = new Animator[3];
     [SerializeField] float distanciaRayoCogerArmas = 0f;
-    [SerializeField] TextMeshProUGUI textoVida, textoMunicion;
+    [SerializeField] TextMeshProUGUI textoVida, textoMunicion, textoRondas;
 
     void Start()
     {
@@ -221,17 +222,18 @@ public class ArmasController : MonoBehaviour
     public void ActualizarHUD()
     {
         textoVida.text = jugador.Vida + " / 10";
+        textoRondas.text = roundsController.NumeroRonda + "";
         if (armas[0].activeSelf)
         {
-            textoMunicion.text = municionMaxPistola + " / " + municionMaxPistola;
+            textoMunicion.text = municionPistola + " / " + municionMaxPistola;
         }
         else if (armas[1].activeSelf)
         {
-            textoMunicion.text = municionMaxRifle + " / " + municionMaxRifle;
+            textoMunicion.text = municionRifle + " / " + municionMaxRifle;
         }
         else if (armas[2].activeSelf)
         {
-            textoMunicion.text = municionMaxEscopeta + " / " + municionMaxEscopeta;
+            textoMunicion.text = municionEscopeta + " / " + municionMaxEscopeta;
         }
     }
 }

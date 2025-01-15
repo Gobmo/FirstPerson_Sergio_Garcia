@@ -8,6 +8,7 @@ public class Jugador : MonoBehaviour
     [SerializeField] Transform pies;
     [SerializeField] LayerMask queEsSuelo;
     [SerializeField] ArmasController armasController;
+    [SerializeField] CanvasManager canvasManager;
     CharacterController cC;
     Vector2 input = Vector2.zero;
     float vida = 10f;
@@ -37,11 +38,12 @@ public class Jugador : MonoBehaviour
         DetectarSuelo();
         AplicarGravedad();
 
-        coolDownRegenVida--;
+        coolDownRegenVida-= Time.deltaTime;
         if (vida < 10 && coolDownRegenVida < 0)
         {
+            Debug.Log("Regenerar");
             vida += 1;
-            coolDownRegenVida = 1f;
+            coolDownRegenVida = 2;
             armasController.ActualizarHUD();
         }
         else if (vida > 10)
@@ -49,8 +51,10 @@ public class Jugador : MonoBehaviour
             vida = 10f;
         }
 
-        if (vida <= 0)
+        if (vida <= 0) // MUERTE
         {
+            vida = 0;
+            canvasManager.MostrarPanelMuerte();
             Time.timeScale = 0;
         }
     }
@@ -101,7 +105,8 @@ public class Jugador : MonoBehaviour
     public void RecibirDano(float danho)
     {
         vida -= danho;
-        coolDownRegenVida = 3f;
+        Debug.Log(vida);
+        coolDownRegenVida = 10;
         armasController.ActualizarHUD();
     }
 
