@@ -9331,7 +9331,7 @@ PrefabInstance:
     - target: {fileID: 3027742286785472262, guid: 37f82b32fb1beeb4d8f21ce151a05f3a,
         type: 3}
       propertyPath: alturaSalto
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3027742286785472262, guid: 37f82b32fb1beeb4d8f21ce151a05f3a,
         type: 3}
