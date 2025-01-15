@@ -74,7 +74,7 @@ public class ArmasController : MonoBehaviour
             CogerArma();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && recargando == false)
         {
             Recargar();
         }
@@ -141,6 +141,7 @@ public class ArmasController : MonoBehaviour
                 cooldownDisparar = tiempoEntreDisparosPistola;
                 municionPistola--;
                 muzzlePistola.Play();
+                animatorArmas[0].SetTrigger("Shoot");
             }
         }
         else if (armas[1].activeSelf) // Disparar rifle
@@ -156,6 +157,7 @@ public class ArmasController : MonoBehaviour
                 cooldownDisparar = tiempoEntreDisparosRifle;
                 municionRifle--;
                 muzzleRifle.Play();
+                animatorArmas[1].SetTrigger("Shoot");
             }
         }
         else if (armas[2].activeSelf) // Disparar escopeta
@@ -177,6 +179,7 @@ public class ArmasController : MonoBehaviour
                 cooldownDisparar = tiempoEntreDisparosEscopeta;
                 municionEscopeta--;
                 muzzleEscopeta.Play();
+                animatorArmas[2].SetTrigger("Shoot");
             }
         }
         ActualizarHUD();
@@ -188,16 +191,19 @@ public class ArmasController : MonoBehaviour
         {
             cooldownRecarga = 2f;
             recargando = true;
+            animatorArmas[0].SetTrigger("Reload");
         }
         else if (armas[1].activeSelf && municionRifle < municionMaxRifle)
         {
             cooldownRecarga = 3f;
             recargando = true;
+            animatorArmas[1].SetTrigger("Reload");
         }
         else if (armas[2].activeSelf && municionEscopeta < municionMaxEscopeta)
         {
             cooldownRecarga = 4f;
             recargando = true;
+            animatorArmas[2].SetTrigger("Reload");
         }
     }
 
