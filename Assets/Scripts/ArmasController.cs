@@ -17,6 +17,7 @@ public class ArmasController : MonoBehaviour
     [SerializeField] LayerMask enemigoMask, armasMask;
     [SerializeField] Jugador jugador;
     [SerializeField] RoundsController roundsController;
+    [SerializeField] AudioManager audioManager;
     public int armaActiva = 0;
     GameObject[] armas = new GameObject[3];
     Animator[] animatorArmas = new Animator[3];
@@ -97,6 +98,7 @@ public class ArmasController : MonoBehaviour
                     municionEscopeta = municionMaxEscopeta;
                 }
                 ActualizarHUD();
+                audioManager.Recargar();
                 recargando = false;
             }
         }
@@ -142,6 +144,7 @@ public class ArmasController : MonoBehaviour
                 municionPistola--;
                 muzzlePistola.Play();
                 animatorArmas[0].SetTrigger("Shoot");
+                audioManager.DisparoPistola();
             }
         }
         else if (armas[1].activeSelf) // Disparar rifle
@@ -158,6 +161,7 @@ public class ArmasController : MonoBehaviour
                 municionRifle--;
                 muzzleRifle.Play();
                 animatorArmas[1].SetTrigger("Shoot");
+                audioManager.DisparoRifle();
             }
         }
         else if (armas[2].activeSelf) // Disparar escopeta
@@ -180,6 +184,7 @@ public class ArmasController : MonoBehaviour
                 municionEscopeta--;
                 muzzleEscopeta.Play();
                 animatorArmas[2].SetTrigger("Shoot");
+                audioManager.DisparoEscopeta();
             }
         }
         ActualizarHUD();
