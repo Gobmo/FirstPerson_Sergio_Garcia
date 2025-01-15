@@ -60,7 +60,7 @@ public class RoundsController : MonoBehaviour
             cooldownSpawn = Random.Range(1, 5f);
             //Debug.Log(enemigosSpawneados);
         }
-        if (enemigosSpawneados == enemigosASpawnear)
+        if (enemigosSpawneados == enemigosASpawnear && enemigosASpawnear == enemigosMuertos)
         {
             activo = false;
         }

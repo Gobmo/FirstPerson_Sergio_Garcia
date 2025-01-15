@@ -8,10 +8,10 @@ public class ArmasController : MonoBehaviour
 {
     [SerializeField] Transform puntoDisparo;
     private float cooldownDisparar = 0f;
-    private float tiempoEntreDisparosPistola = 1f, tiempoEntreDisparosRifle = 0.5f, tiempoEntreDisparosEscopeta = 2f;
+    private float tiempoEntreDisparosPistola = 1f, tiempoEntreDisparosRifle = 0.2f, tiempoEntreDisparosEscopeta = 2f;
     private int municionPistola = 0, municionRifle = 0, municionEscopeta = 0;
     private int municionMaxPistola = 15, municionMaxRifle = 30, municionMaxEscopeta = 8;
-    private int danhoPistola = 5, danhoRifle = 1, danhoEscopeta = 1;
+    private int danhoPistola = 3, danhoRifle = 2, danhoEscopeta = 1;
     private bool recargando = false;
     private float cooldownRecarga = 0f;
     [SerializeField] LayerMask enemigoMask, armasMask;
@@ -22,6 +22,7 @@ public class ArmasController : MonoBehaviour
     Animator[] animatorArmas = new Animator[3];
     [SerializeField] float distanciaRayoCogerArmas = 0f;
     [SerializeField] TextMeshProUGUI textoVida, textoMunicion, textoRondas;
+    [SerializeField] ParticleSystem muzzlePistola, muzzleRifle, muzzleEscopeta;
 
     void Start()
     {
@@ -139,6 +140,7 @@ public class ArmasController : MonoBehaviour
                 }
                 cooldownDisparar = tiempoEntreDisparosPistola;
                 municionPistola--;
+                muzzlePistola.Play();
             }
         }
         else if (armas[1].activeSelf) // Disparar rifle
@@ -153,6 +155,7 @@ public class ArmasController : MonoBehaviour
                 }
                 cooldownDisparar = tiempoEntreDisparosRifle;
                 municionRifle--;
+                muzzleRifle.Play();
             }
         }
         else if (armas[2].activeSelf) // Disparar escopeta
@@ -173,6 +176,7 @@ public class ArmasController : MonoBehaviour
                 }
                 cooldownDisparar = tiempoEntreDisparosEscopeta;
                 municionEscopeta--;
+                muzzleEscopeta.Play();
             }
         }
         ActualizarHUD();

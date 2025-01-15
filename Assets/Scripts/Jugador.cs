@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Jugador : MonoBehaviour
 {
@@ -9,11 +11,12 @@ public class Jugador : MonoBehaviour
     [SerializeField] LayerMask queEsSuelo;
     [SerializeField] ArmasController armasController;
     [SerializeField] CanvasManager canvasManager;
+    [SerializeField] Slider slider;
     CharacterController cC;
     Vector2 input = Vector2.zero;
     float vida = 10f;
     float coolDownRegenVida = 3f;
-    float velocidadMov = 0, velocidadAndar = 10f, velocidadCorrer = 15f;
+    float velocidadMov = 0, velocidadAndar = 4f, velocidadCorrer = 8f;
     private Vector3 movimientoVertical;
 
     public float Vida { get => vida; }
@@ -22,6 +25,9 @@ public class Jugador : MonoBehaviour
     {
         cC = GetComponent<CharacterController>();
         velocidadMov = velocidadAndar;
+
+        slider.value = 0f;
+        slider.onValueChanged.AddListener(OnSliderValueChanged);
     }
 
     void Update()
@@ -41,7 +47,6 @@ public class Jugador : MonoBehaviour
         coolDownRegenVida-= Time.deltaTime;
         if (vida < 10 && coolDownRegenVida < 0)
         {
-            Debug.Log("Regenerar");
             vida += 1;
             coolDownRegenVida = 2;
             armasController.ActualizarHUD();
@@ -105,9 +110,13 @@ public class Jugador : MonoBehaviour
     public void RecibirDano(float danho)
     {
         vida -= danho;
-        Debug.Log(vida);
         coolDownRegenVida = 10;
         armasController.ActualizarHUD();
+    }
+
+    private void OnSliderValueChanged(float value)
+    {
+        velocidadRotacion = value;
     }
 
     private void OnDrawGizmos()
